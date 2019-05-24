@@ -1,7 +1,7 @@
 <?php
 namespace PHPSegmentTree;
 /**
- * This is only an simple object used as a flag.
+ * This is only a simple object used as a flag.
  *
  * @author fdrea
  *
