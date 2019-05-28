@@ -1,7 +1,5 @@
 <?php
 namespace PHPSegmentTree;
-require_once __DIR__ . '/MixtureFlag.php';
-require_once __DIR__ . '/SegmentTreeValueNotFoundException.php';
 abstract class Node implements \Countable {
     public function count() {
         return $this->r - $this->l + 1;
@@ -159,16 +157,18 @@ abstract class Node implements \Countable {
         }
     }
     protected function _delValue(int $l, int $r, string $key): void {
-        if (property_exists($this->data, $key) && ! $this->data->{$key} instanceof MixtureFlag) {
-            unset($this->data->{$key});
+        if (! property_exists($this->data, $key))
             return;
-        }
 
         if ($l <= $this->l && $this->r <= $r) {
-            if (property_exists($this->data, $key))
-                unset($this->data->{$key});
+            unset($this->data->{$key});
         } else {
             $middle = $this->getMiddle();
+            $current_value = $this->data->{$key};
+            if (! $current_value instanceof MixtureFlag) {
+                $this->node_l->data->{$key} = $current_value;
+                $this->node_r->data->{$key} = $current_value;
+            }
 
             if ($l <= $middle)
                 $this->node_l->_delValue($l, $r, $key);
@@ -176,17 +176,10 @@ abstract class Node implements \Countable {
             if ($r > $middle)
                 $this->node_r->_delValue($l, $r, $key);
 
-            $l_property_exists = property_exists($this->node_l->data, $key);
-            $r_property_exists = property_exists($this->node_r->data, $key);
-
-            if ($l_property_exists && $r_property_exists) {
+            if (property_exists($this->node_l->data, $key) || property_exists($this->node_r->data, $key)) {
                 $this->data->{$key} = MixtureFlag::getInstance();
-            } elseif (! $l_property_exists && ! $l_property_exists) {
-                if (property_exists($this->data, $key))
-                    unset($this->data->{$key});
-            } else {
-                $this->data->{$key} = MixtureFlag::getInstance();
-            }
+            } else
+                unset($this->data->{$key});
         }
     }
     protected function createChildNode(int $middle): void {

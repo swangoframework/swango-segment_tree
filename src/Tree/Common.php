@@ -1,6 +1,5 @@
 <?php
 namespace PHPSegmentTree\Tree;
-require_once __DIR__ . '/../AbstractSegmentTree.php';
 class Common extends \PHPSegmentTree\AbstractSegmentTree {
     /**
      * Create a new tree by left position and right position
@@ -117,30 +116,5 @@ class Common extends \PHPSegmentTree\AbstractSegmentTree {
             $this->l,
             $this->r
         ];
-    }
-    /**
-     * Set to use "==" when comparing values.
-     * Two objects of different instances that have same content will be considered equal.
-     *
-     * This is a default setting. No need to call manualy.
-     * Must be called before set any value or things could be corrupted.
-     *
-     * @return self
-     */
-    public function useDoubleEqualSign(): self {
-        $this->use_double_equal_sign = true;
-        return $this;
-    }
-    /**
-     * Set to use "===" when comparing values.
-     * Two objects of different instances will be considered not equal no matter their content.
-     *
-     * Must be called before set any value or things could be corrupted.
-     *
-     * @return self
-     */
-    public function useTripleEqualSign(): self {
-        $this->use_double_equal_sign = false;
-        return $this;
     }
 }
