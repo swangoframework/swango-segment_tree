@@ -46,7 +46,7 @@ $tree = PHPSegmentTree\Tree\Version::newTree(
     '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.1.0', '1.4.1', '2.0.0', '2.0.1-RC1', '3.0.0'
 ); // Create a tree with versions. These versions will be sorted using version_compare() and remove all duplicated
 
-// All methos all similar similar with Common tree.
+// All methos are similar with Common tree.
 $tree->setValue('1.0.2', '2.0.0', 'key1', $true);
 var_dump($tree->getValue('1.1.0'));
 ```
