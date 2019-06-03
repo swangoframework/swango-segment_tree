@@ -164,6 +164,7 @@ abstract class Node implements \Countable {
             unset($this->data->{$key});
         } else {
             $middle = $this->getMiddle();
+            $this->createChildNode($middle);
             $current_value = $this->data->{$key};
             if (! $current_value instanceof MixtureFlag) {
                 $this->node_l->data->{$key} = $current_value;
