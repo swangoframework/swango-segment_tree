@@ -1,6 +1,6 @@
 <?php
-namespace PHPSegmentTree\Tree;
-class Common extends \PHPSegmentTree\AbstractSegmentTree {
+namespace Swango\SegmentTree\Tree;
+class Common extends \Swango\SegmentTree\AbstractSegmentTree {
     /**
      * Create a new tree by left position and right position
      *
@@ -37,7 +37,7 @@ class Common extends \PHPSegmentTree\AbstractSegmentTree {
     }
     /**
      * Get a fixed array the size of whole tree filled with values of every position.
-     * The fixed array start with zero and values \PHPSegmentTree\SegmentTreeValueNotFoundException for every empty position.
+     * The fixed array start with zero and values \Swango\SegmentTree\SegmentTreeValueNotFoundException for every empty position.
      *
      * @param string $key
      * @return \SplFixedArray
@@ -83,7 +83,7 @@ class Common extends \PHPSegmentTree\AbstractSegmentTree {
      *
      * @param int $position
      * @param string $key
-     * @throws \PHPSegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
+     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
      * @throws \OutOfRangeException
      * @return mixed
      */

@@ -1,5 +1,5 @@
 <?php
-namespace PHPSegmentTree;
+namespace Swango\SegmentTree;
 abstract class Node implements \Countable {
     public function count() {
         return $this->r - $this->l + 1;

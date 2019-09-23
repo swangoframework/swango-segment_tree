@@ -1,5 +1,5 @@
 <?php
-namespace PHPSegmentTree;
+namespace Swango\SegmentTree;
 abstract class AbstractSegmentTree extends Node {
     /**
      * Get all existing keys.

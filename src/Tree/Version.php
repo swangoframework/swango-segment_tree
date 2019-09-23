@@ -1,6 +1,6 @@
 <?php
-namespace PHPSegmentTree\Tree;
-class Version extends \PHPSegmentTree\AbstractSegmentTree {
+namespace Swango\SegmentTree\Tree;
+class Version extends \Swango\SegmentTree\AbstractSegmentTree {
     /**
      *
      * @var \SplFixedArray $compressed_version_map
@@ -124,7 +124,7 @@ class Version extends \PHPSegmentTree\AbstractSegmentTree {
     }
     /**
      * Get a fixed array the size of whole tree filled with values of every position.
-     * The fixed array start with zero and values \PHPSegmentTree\SegmentTreeValueNotFoundException for every empty position.
+     * The fixed array start with zero and values \Swango\SegmentTree\SegmentTreeValueNotFoundException for every empty position.
      *
      * @param string $key
      * @return array
@@ -189,7 +189,7 @@ class Version extends \PHPSegmentTree\AbstractSegmentTree {
      *
      * @param string $version
      * @param string $key
-     * @throws \PHPSegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
+     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
      * @throws \OutOfRangeException
      * @return mixed
      */

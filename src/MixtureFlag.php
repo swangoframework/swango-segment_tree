@@ -1,5 +1,5 @@
 <?php
-namespace PHPSegmentTree;
+namespace Swango\SegmentTree;
 /**
  * This is only a simple object used as a flag.
  *
