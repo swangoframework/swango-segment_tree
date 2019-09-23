@@ -1,12 +1,12 @@
-# PHPSegmentTree
+# Swango\SegmentTree
 
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg?maxAge=2592000)](https://secure.php.net/)
-[![Archer License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swlib/archer/blob/master/LICENSE)
+[![SegmentTree License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swlib/archer/blob/master/LICENSE)
 
 Easy segment tree in PHP. Support multi key-value storage. Written without any global variable. Can be used in all kinds of environment.
 ### Common segment tree
 ```php
-$tree = PHPSegmentTree\Tree\Common::newTree(0,100000); // Create a tree with scale of 0~100000;
+$tree = Swango\SegmentTree\Tree\Common::newTree(0,100000); // Create a tree with scale of 0~100000;
 
 // Set to use "==" when comparing values. Two objects of different instances that have same content will be considered equal.
 $tree->useDoubleEqualSign();
@@ -42,7 +42,7 @@ $tree->clear();
 ```
 ### Version compressed segment tree
 ```php
-$tree = PHPSegmentTree\Tree\Version::newTree(
+$tree = Swango\SegmentTree\Tree\Version::newTree(
     '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.1.0', '1.4.1', '2.0.0', '2.0.1-RC1', '3.0.0'
 ); // Create a tree with versions. These versions will be sorted using version_compare() and remove all duplicated
 
