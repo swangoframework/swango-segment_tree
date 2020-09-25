@@ -6,11 +6,12 @@ class Common extends \Swango\SegmentTree\AbstractSegmentTree {
      *
      * @param string $l
      * @param string $r
-     * @return SegmentTree
+     * @return Common
      */
     public static function newTree(int $l, int $r): Common {
-        if ($l > $r)
+        if ($l > $r) {
             throw new \Exception('Left position cannot be larger than right');
+        }
         return new self($l, $r);
     }
     /**
@@ -54,12 +55,13 @@ class Common extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param int $r
      * @param string $key
      * @param mixed $value
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function setValue(int $l, int $r, string $key, $value): self {
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_setValue($l, $r, $key, $value);
         return $this;
     }
@@ -70,12 +72,13 @@ class Common extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param int $l
      * @param int $r
      * @param string $key
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function delValue(int $l, int $r, string $key): self {
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_delValue($l, $r, $key);
         return $this;
     }
@@ -83,27 +86,42 @@ class Common extends \Swango\SegmentTree\AbstractSegmentTree {
      *
      * @param int $position
      * @param string $key
-     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
-     * @throws \OutOfRangeException
      * @return mixed
+     * @throws \OutOfRangeException
+     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Throws when the given key is not set on $position
      */
     public function getValue(int $position, string $key) {
-        if ($position < $this->l || $position > $this->r)
+        if ($position < $this->l || $position > $this->r) {
             throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
         return $this->_getValue($position, $key);
     }
     /**
-     * determin if the given $key exists between $l and $r, no matter the value
+     * @param int $position
+     * @return array
+     * @throws \OutOfRangeException
+     */
+    public function getAllValue(int $position): array {
+        if ($position < $this->l || $position > $this->r) {
+            throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
+        $result = [];
+        $this->_getData($position, $result);
+        return $result;
+    }
+    /**
+     * Determine if the given $key exists between $l and $r, no matter the value
      *
      * @param string $l
      * @param string $r
      * @param string $key
-     * @throws \OutOfRangeException
      * @return bool
+     * @throws \OutOfRangeException
      */
     public function exists(int $l, int $r, string $key): bool {
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         return $this->_exists($l, $r, $key);
     }
     /**

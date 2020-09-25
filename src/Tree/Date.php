@@ -10,23 +10,25 @@ class Date extends \Swango\SegmentTree\AbstractSegmentTree {
      *            string date or unix timestamp in second
      * @param mixed $max_date
      *            string date or unix timestamp in second
-     * @throws \OutOfRangeException
      * @return Date
+     * @throws \OutOfRangeException
      */
     public static function newTree($min_date, $max_date): Date {
         $date_offset = self::convertDate($min_date, 0);
         $to_date = self::convertDate($max_date, $date_offset);
-        if ($to_date < 0)
+        if ($to_date < 0) {
             throw new \OutOfRangeException('To date out of range! $to_date before $from_date');
+        }
         $root = new self(0, $to_date);
         $root->date_offset = $date_offset;
         return $root;
     }
     protected static function convertDate($date, int $date_offset): int {
-        if (is_string($date))
+        if (is_string($date)) {
             return intdiv(strtotime($date), 86400) - $date_offset;
-        else
+        } else {
             return intdiv($date, 86400) - $date_offset;
+        }
     }
     protected static function toStringDate(int $position, int $date_offset): string {
         return date('Y-m-d', ($position + $date_offset) * 86400);
@@ -81,7 +83,7 @@ class Date extends \Swango\SegmentTree\AbstractSegmentTree {
         $fixed_array = new \SplFixedArray($this->r - $this->l + 1);
         $this->_getFixedArray($key, $fixed_array, $this->l);
         $ret = [];
-        for($i = 0, $l = $fixed_array->getSize(); $i < $l; ++ $i)
+        for ($i = 0, $l = $fixed_array->getSize(); $i < $l; ++$i)
             $ret[self::toStringDate($i, $this->date_offset)] = $fixed_array[$i];
         return $ret;
     }
@@ -92,20 +94,23 @@ class Date extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param mixed $to_date
      * @param string $key
      * @param mixed $value
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function setValue($from_date, $to_date, string $key, $value): self {
-        if (isset($from_date))
+        if (isset($from_date)) {
             $l = self::convertDate($from_date, $this->date_offset);
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_date))
+        }
+        if (isset($to_date)) {
             $r = self::convertDate($to_date, $this->date_offset);
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_setValue($l, $r, $key, $value);
         return $this;
     }
@@ -116,20 +121,23 @@ class Date extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param mixed $from_date
      * @param mixed $to_date
      * @param string $key
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function delValue($from_date, $to_date, string $key): self {
-        if (isset($from_date))
+        if (isset($from_date)) {
             $l = self::convertDate($from_date, $this->date_offset);
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_date))
+        }
+        if (isset($to_date)) {
             $r = self::convertDate($to_date, $this->date_offset);
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_delValue($l, $r, $key);
         return $this;
     }
@@ -137,36 +145,54 @@ class Date extends \Swango\SegmentTree\AbstractSegmentTree {
      *
      * @param mixed $date
      * @param string $key
-     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
-     * @throws \OutOfRangeException
      * @return mixed
+     * @throws \OutOfRangeException
+     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Throws when the given key is not set on $position
      */
     public function getValue($date, string $key) {
         $position = self::convertDate($date, $this->date_offset);
-        if ($position < $this->l || $position > $this->r)
+        if ($position < $this->l || $position > $this->r) {
             throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
         return $this->_getValue($position, $key);
     }
     /**
-     * determin if the given $key exists between $from_date and $to_date, no matter the value
+     * @param mixed $date
+     * @return array
+     * @throws \OutOfRangeException
+     */
+    public function getAllValue($date): array {
+        $position = self::convertDate($date, $this->date_offset);
+        if ($position < $this->l || $position > $this->r) {
+            throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
+        $result = [];
+        $this->_getData($position, $result);
+        return $result;
+    }
+    /**
+     * Determine if the given $key exists between $from_date and $to_date, no matter the value
      *
      * @param mixed $from_date
      * @param mixed $to_date
      * @param string $key
-     * @throws \OutOfRangeException
      * @return bool
+     * @throws \OutOfRangeException
      */
     public function exists($from_date, $to_date, string $key): bool {
-        if (isset($from_date))
+        if (isset($from_date)) {
             $l = self::convertDate($from_date, $this->date_offset);
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_date))
+        }
+        if (isset($to_date)) {
             $r = self::convertDate($to_date, $this->date_offset);
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         return $this->_exists($l, $r, $key);
     }
     /**

@@ -18,13 +18,12 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
         $versions = array_unique($version);
         $length = count($versions);
         $compressed_version_map = new \SplFixedArray($length - 1);
-        foreach ($versions as $i=>$v)
+        foreach ($versions as $i => $v)
             $compressed_version_map[$i] = $v;
         self::qsortVersions($compressed_version_map, 0, $length - 1);
         $version_compressed_map = [];
-        for($i = 0; $i < $length; ++ $i)
+        for ($i = 0; $i < $length; ++$i)
             $version_compressed_map[$compressed_version_map[$i]] = $i;
-
         $root = new self(0, $length);
         $root->compressed_version_map = $compressed_version_map;
         $root->version_compressed_map = $version_compressed_map;
@@ -40,12 +39,11 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
         $versions = array_unique($version);
         $length = count($versions);
         $compressed_version_map = new \SplFixedArray($length - 1);
-        foreach ($versions as $i=>$v)
+        foreach ($versions as $i => $v)
             $compressed_version_map[$i] = $v;
         $version_compressed_map = [];
-        for($i = 0; $i < $length; ++ $i)
+        for ($i = 0; $i < $length; ++$i)
             $version_compressed_map[$compressed_version_map[$i]] = $i;
-
         $root = new self(0, $length);
         $root->compressed_version_map = $compressed_version_map;
         $root->version_compressed_map = $version_compressed_map;
@@ -64,24 +62,26 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
         $x = $arr[intdiv($l + $r, 2)];
         $t = null;
         do {
-            while ( version_compare($arr[$i], $x) === - 1 )
-                ++ $i;
-            while ( version_compare($x, $arr[$j]) === - 1 )
-                -- $j;
+            while (version_compare($arr[$i], $x) === -1)
+                ++$i;
+            while (version_compare($x, $arr[$j]) === -1)
+                --$j;
             if ($i <= $j) {
                 $t = $arr[$i];
                 $arr[$i] = $arr[$j];
                 $arr[$j] = $t;
-                ++ $i;
-                -- $j;
+                ++$i;
+                --$j;
             }
-        } while ( $i <= $j );
+        } while ($i <= $j);
         unset($t);
         unset($x);
-        if ($i < $r)
+        if ($i < $r) {
             self::qsortVersions($arr, $i, $r);
-        if ($l < $j)
+        }
+        if ($l < $j) {
             self::qsortVersions($arr, $l, $j);
+        }
     }
     /**
      *
@@ -133,7 +133,7 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
         $fixed_array = new \SplFixedArray($this->r - $this->l + 1);
         $this->_getFixedArray($key, $fixed_array, $this->l);
         $ret = [];
-        for($i = 0, $l = $fixed_array->getSize(); $i < $l; ++ $i)
+        for ($i = 0, $l = $fixed_array->getSize(); $i < $l; ++$i)
             $ret[$this->compressed_version_map[$i]] = $fixed_array[$i];
         return $ret;
     }
@@ -144,20 +144,23 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param string $to_version
      * @param string $key
      * @param mixed $value
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function setValue(?string $from_version, ?string $to_version, string $key, $value): self {
-        if (isset($from_version))
+        if (isset($from_version)) {
             $l = $this->version_compressed_map[$from_version];
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_version))
+        }
+        if (isset($to_version)) {
             $r = $this->version_compressed_map[$to_version];
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_setValue($l, $r, $key, $value);
         return $this;
     }
@@ -168,20 +171,23 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
      * @param string $from_version
      * @param string $to_version
      * @param string $key
-     * @throws \OutOfRangeException
      * @return self
+     * @throws \OutOfRangeException
      */
     public function delValue(?string $from_version, ?string $to_version, string $key): self {
-        if (isset($from_version))
+        if (isset($from_version)) {
             $l = $this->version_compressed_map[$from_version];
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_version))
+        }
+        if (isset($to_version)) {
             $r = $this->version_compressed_map[$to_version];
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         $this->_delValue($l, $r, $key);
         return $this;
     }
@@ -189,36 +195,54 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
      *
      * @param string $version
      * @param string $key
-     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Thorws when the given key is not set on $position
-     * @throws \OutOfRangeException
      * @return mixed
+     * @throws \OutOfRangeException
+     * @throws \Swango\SegmentTree\SegmentTreeValueNotFoundException Throws when the given key is not set on $position
      */
     public function getValue(string $version, string $key) {
         $position = $this->version_compressed_map[$version];
-        if ($position < $this->l || $position > $this->r)
+        if ($position < $this->l || $position > $this->r) {
             throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
         return $this->_getValue($position, $key);
     }
     /**
-     * determin if the given $key exists between $from_version and $to_version, no matter the value
+     * @param string $version
+     * @return array
+     * @throws \OutOfRangeException
+     */
+    public function getAllValue(string $version): array {
+        $position = $this->version_compressed_map[$version];
+        if ($position < $this->l || $position > $this->r) {
+            throw new \OutOfRangeException("Position out of range! position:$position out of [$this->l, $this->r]");
+        }
+        $result = [];
+        $this->_getData($position, $result);
+        return $result;
+    }
+    /**
+     * Determine if the given $key exists between $from_version and $to_version, no matter the value
      *
      * @param string $from_version
      * @param string $to_version
      * @param string $key
-     * @throws \OutOfRangeException
      * @return bool
+     * @throws \OutOfRangeException
      */
     public function exists(?string $from_version, ?string $to_version, string $key): bool {
-        if (isset($from_version))
+        if (isset($from_version)) {
             $l = $this->version_compressed_map[$from_version];
-        else
+        } else {
             $l = $this->l;
-        if (isset($to_version))
+        }
+        if (isset($to_version)) {
             $r = $this->version_compressed_map[$to_version];
-        else
+        } else {
             $r = $this->r;
-        if ($l > $r || $l < $this->l || $r > $this->r)
+        }
+        if ($l > $r || $l < $this->l || $r > $this->r) {
             throw new \OutOfRangeException("Position out of range! l:$l,r:$r out of [$this->l, $this->r]");
+        }
         return $this->_exists($l, $r, $key);
     }
     /**
@@ -233,7 +257,7 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
         ];
     }
     /**
-     * Determin if given version is valid
+     * Determine if given version is valid
      *
      * @param string $version
      * @return bool
@@ -248,8 +272,9 @@ class Version extends \Swango\SegmentTree\AbstractSegmentTree {
      */
     public function getVersionBefore(string $version): ?string {
         $version = $this->version_compressed_map[$version];
-        if ($version === 0)
+        if ($version === 0) {
             return null;
+        }
         return $this->compressed_version_map[$version - 1];
     }
 }

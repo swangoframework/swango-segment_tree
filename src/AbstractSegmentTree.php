@@ -9,24 +9,26 @@ abstract class AbstractSegmentTree extends Node {
      */
     public function getAllExistingKeys(): array {
         $ret = [];
-        foreach ($this->data as $key=>&$tmp)
+        foreach ($this->data as $key => &$tmp)
             $ret[] = $key;
         return $key;
     }
-    protected $use_double_equal_sign = true;
+    protected bool $use_double_equal_sign = true;
     protected function isEqual($x, $y): bool {
-        if ($x instanceof MixtureFlag || $y instanceof MixtureFlag)
+        if ($x instanceof MixtureFlag || $y instanceof MixtureFlag) {
             return false;
-        if ($this->use_double_equal_sign)
+        }
+        if ($this->use_double_equal_sign) {
             return $x == $y;
-        else
+        } else {
             return $x === $y;
+        }
     }
     /**
      * Set to use "==" when comparing values.
      * Two objects of different instances that have same content will be considered equal.
      *
-     * This is a default setting. No need to call manualy.
+     * This is a default setting. No need to call manually.
      * Must be called before set any value or things could be corrupted.
      *
      * @return self
@@ -66,8 +68,8 @@ abstract class AbstractSegmentTree extends Node {
      */
     public function clear(): self {
         $this->data = new \stdClass();
-        $this->node_l = null;
-        $this->node_r = null;
+        unset($this->node_l);
+        unset($this->node_r);
         return $this;
     }
     /**
@@ -76,8 +78,9 @@ abstract class AbstractSegmentTree extends Node {
      * @return self
      */
     public function optimize(): self {
-        if (! $this->hasChildNode())
+        if (! $this->hasChildNode()) {
             return $this;
+        }
         $queue = new \SplQueue();
         $queue->enqueue($this);
         do {
@@ -88,16 +91,17 @@ abstract class AbstractSegmentTree extends Node {
             $node = $queue->dequeue();
             foreach ($node->data as $value)
                 if ($value instanceof MixtureFlag) {
-                    if ($node->node_l->hasChildNode())
+                    if ($node->node_l->hasChildNode()) {
                         $queue->enqueue($node->node_l);
-                    if ($node->node_r->hasChildNode())
+                    }
+                    if ($node->node_r->hasChildNode()) {
                         $queue->enqueue($node->node_r);
+                    }
                     continue 2;
                 }
-
-            $node->node_l = null;
-            $node->node_r = null;
-        } while ( ! $queue->isEmpty() );
+            unset($this->node_l);
+            unset($this->node_r);
+        } while (! $queue->isEmpty());
         return $this;
     }
     /**
@@ -110,9 +114,8 @@ abstract class AbstractSegmentTree extends Node {
         $queue = new \SplQueue();
         $queue->enqueue($this);
         do {
-            ++ $count;
+            ++$count;
             /**
-             *
              * @var Node $node
              */
             $node = $queue->dequeue();
@@ -120,7 +123,7 @@ abstract class AbstractSegmentTree extends Node {
                 $queue->enqueue($node->node_l);
                 $queue->enqueue($node->node_r);
             }
-        } while ( ! $queue->isEmpty() );
+        } while (! $queue->isEmpty());
         return $count;
     }
 }

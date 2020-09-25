@@ -22,13 +22,13 @@ $tree->setValue(50000, 60000, 'key2', new \SplQueue());
 $tree->setValue(99999, 100000, 'key3', 'some value');
 
 // Get value of certain position.
-var_dump($tree->getValue(20006));
+var_dump($tree->getValue(20006, 'key1'));
 
-// Delete value of between certain postions.
+// Delete value of between certain positions.
 $tree->delValue(30000, 100000, 'key1');
 
-// Thorws exception when value not found.
-var_dump($tree->getValue(70000));
+// Throws exception when value not found.
+var_dump($tree->getValue(70000, 'key1'));
 
 // Get segment arrays.
 var_dump($tree->getSegmentsOfGivenKey('key1'));
@@ -46,10 +46,18 @@ $tree = Swango\SegmentTree\Tree\Version::newTree(
     '1.0.0', '1.0.1', '1.0.2', '1.0.3', '1.1.0', '1.4.1', '2.0.0', '2.0.1-RC1', '3.0.0'
 ); // Create a tree with versions. These versions will be sorted using version_compare() and remove all duplicated
 
-// All methos are similar with Common tree.
-$tree->setValue('1.0.2', '2.0.0', 'key1', $true);
+// All methods are similar with Common tree.
+$tree->setValue('1.0.2', '2.0.0', 'key1', true);
 var_dump($tree->getValue('1.1.0'));
 ```
 ### Date compressed segment tree
-(todo)
+```php
+$tree = Swango\SegmentTree\Tree\Date::newTree(
+    '2020-09-25', '2020-12-12'
+); // Create a tree with dates. 
+
+// All methods are similar with Common tree.
+$tree->setValue('2020-09-29', '2020-11-11', 'key1', true);
+var_dump($tree->getValue('2020-11-01'));
+```
 
