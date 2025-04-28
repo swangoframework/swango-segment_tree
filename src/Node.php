@@ -10,7 +10,7 @@ abstract class Node implements \Countable {
         $this->r = $r;
         $this->data = new \stdClass();
     }
-    public function count() {
+    public function count(): int {
         return $this->r - $this->l + 1;
     }
     protected function hasChildNode(): bool {
