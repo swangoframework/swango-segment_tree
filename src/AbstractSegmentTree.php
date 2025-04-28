@@ -9,9 +9,9 @@ abstract class AbstractSegmentTree extends Node {
      */
     public function getAllExistingKeys(): array {
         $ret = [];
-        foreach ($this->data as $key => &$tmp)
+        foreach ($this->data as $key => &$_)
             $ret[] = $key;
-        return $key;
+        return $ret;
     }
     protected bool $use_double_equal_sign = true;
     protected function isEqual($x, $y): bool {
